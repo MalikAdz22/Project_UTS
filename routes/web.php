@@ -6,18 +6,18 @@ use App\Http\Controllers\JadwalController;
 
 // Halaman awal / dashboard
 Route::get('/', function () {
-    return view('dashboard'); // ganti ke 'dashboard' kalau kamu sudah punya dashboard.blade.php
+    return view('dashboard');
 })->name('dashboard');
 
 // === Routing untuk Pendaftar ===
 Route::prefix('pendaftars')->name('pendaftars.')->group(function () {
-    Route::get('/', [PendaftarController::class, 'index'])->name('index');           // Tabel view
-    Route::get('/data', [PendaftarController::class, 'data'])->name('data');         // Untuk DataTables (AJAX)
-    Route::get('/create', [PendaftarController::class, 'create'])->name('create');   // Form tambah
-    Route::post('/', [PendaftarController::class, 'store'])->name('store');          // Simpan data baru
-    Route::get('/{id}/edit', [PendaftarController::class, 'edit'])->name('edit');    // Form edit
-    Route::put('/{id}', [PendaftarController::class, 'update'])->name('update');     // Update data
-    Route::delete('/{id}', [PendaftarController::class, 'destroy'])->name('destroy');// Hapus data
+    Route::get('/', [PendaftarController::class, 'index'])->name('index');           // Menampilkan halaman utama daftar pendaftar (view dengan tabel)
+    Route::get('/data', [PendaftarController::class, 'data'])->name('data');         // Endpoint API untuk DataTables (mengembalikan data JSON)
+    Route::get('/create', [PendaftarController::class, 'create'])->name('create');   // Menampilkan form tambah pendaftar
+    Route::post('/', [PendaftarController::class, 'store'])->name('store');          // Menyimpan data pendaftar baru (dari form create)
+    Route::get('/{id}/edit', [PendaftarController::class, 'edit'])->name('edit');    // Menampilkan form edit pendaftar
+    Route::put('/{id}', [PendaftarController::class, 'update'])->name('update');     // Memperbarui data pendaftar (dari form edit)
+    Route::delete('/{id}', [PendaftarController::class, 'destroy'])->name('destroy');  // Menghapus data pendaftar
 });
 
 // === Routing untuk Jadwal ===

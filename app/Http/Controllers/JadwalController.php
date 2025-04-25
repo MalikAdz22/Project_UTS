@@ -55,8 +55,11 @@ class JadwalController extends Controller
     }
 
     // Menampilkan form untuk mengedit jadwal
-    public function edit(Jadwal $jadwal)
+    public function edit($id)
     {
+        // Cari data jadwal berdasarkan ID
+        $jadwal = Jadwal::findOrFail($id);
+
         // Daftar pilihan tes seleksi
         $tesSeleksiOptions = [
             'Tes Fisik',
@@ -65,11 +68,12 @@ class JadwalController extends Controller
             'Pertandingan'
         ];
 
-        return view('jadwals.edit', compact('jadwal', 'tesSeleksiOptions')); // Menampilkan form edit dengan data jadwal dan pilihan tes seleksi
+        // Menampilkan form edit dengan data jadwal dan pilihan tes seleksi
+        return view('jadwals.edit', compact('jadwal', 'tesSeleksiOptions'));
     }
 
     // Memperbarui data jadwal
-    public function update(Request $request, Jadwal $jadwal)
+    public function update(Request $request, $id)
     {
         // Validasi data yang diterima dari form
         $request->validate([
@@ -78,6 +82,9 @@ class JadwalController extends Controller
             'waktu_mulai' => 'required|date_format:H:i',
             'waktu_selesai' => 'required|date_format:H:i|after:waktu_mulai',
         ]);
+
+        // Cari data jadwal berdasarkan ID
+        $jadwal = Jadwal::findOrFail($id);
 
         // Memperbarui data jadwal
         $jadwal->update([
@@ -92,8 +99,11 @@ class JadwalController extends Controller
     }
 
     // Menghapus jadwal
-    public function destroy(Jadwal $jadwal)
+    public function destroy($id)
     {
+        // Cari data jadwal berdasarkan ID
+        $jadwal = Jadwal::findOrFail($id);
+
         // Menghapus data jadwal
         $jadwal->delete();
 

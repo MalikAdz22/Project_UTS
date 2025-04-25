@@ -14,7 +14,7 @@
                 {{ session('success') }}
             </div>
         @endif
-        
+
         <!-- Tombol untuk tambah jadwal -->
         <a href="{{ route('jadwals.create') }}" class="btn btn-success mb-3">
             <i class="fas fa-calendar-plus"></i> Tambah Jadwal
@@ -34,20 +34,20 @@
             <tbody>
                 @foreach($jadwals as $jadwal)
                     <tr>
-                        <td>{{ $jadwal->nama_seleksi }}</td>
-                        <td>{{ date('d-m-Y', strtotime($jadwal->tanggal_seleksi)) }}</td> <!-- Format tanggal -->
-                        <td>{{ date('H:i', strtotime($jadwal->waktu_mulai)) }}</td> <!-- Format waktu mulai -->
-                        <td>{{ date('H:i', strtotime($jadwal->waktu_selesai)) }}</td> <!-- Format waktu selesai -->
+                        <td>{{ $jadwal->tes_seleksi }}</td>
+                        <td>{{ date('d-m-Y', strtotime($jadwal->tanggal_seleksi)) }}</td>
+                        <td>{{ date('H:i', strtotime($jadwal->waktu_mulai)) }}</td>
+                        <td>{{ date('H:i', strtotime($jadwal->waktu_selesai)) }}</td>
                         <td>
                             <a href="{{ route('jadwals.edit', $jadwal) }}" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <form action="{{ route('jadwals.destroy', $jadwal) }}" method="POST" style="display:inline;">
+                            <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $jadwal->id }}">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                            <form id="delete-form-{{ $jadwal->id }}" action="{{ route('jadwals.destroy', $jadwal->id) }}" method="POST" style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus jadwal ini?')">
-                                    <i class="fas fa-trash-alt"></i> Hapus
-                                </button>
                             </form>
                         </td>
                     </tr>
@@ -71,6 +71,30 @@
                 infoEmpty: "Tidak ada data",
                 infoFiltered: "(terfilter dari _MAX_ total data)"
             }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Event listener untuk tombol hapus
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form hapus
+                        document.getElementById(`delete-form-${id}`).submit();
+                    }
+                });
+            });
         });
     });
 </script>

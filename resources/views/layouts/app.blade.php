@@ -34,6 +34,8 @@
     <script src="{{ asset('sb/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('sb/js/sb-admin-2.min.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @stack('scripts')
 </body>
 

@@ -15,7 +15,6 @@ class Pendaftar extends Model
         'posisi',
         'kontak',
         'alamat',
-        'status', // Pastikan status ada di sini
     ];
 
     protected $casts = [
@@ -26,22 +25,5 @@ class Pendaftar extends Model
     public function getNamaLengkapAttribute($value)
     {
         return ucwords(strtolower($value));
-    }
-
-    // Validasi status untuk memastikan hanya nilai yang valid yang disimpan
-    public static function validStatuses()
-    {
-        return ['Menunggu', 'Diterima', 'Ditolak'];
-    }
-
-    // Menambahkan fungsi untuk validasi status secara manual, jika diperlukan
-    public function setStatusAttribute($value)
-    {
-        if (!in_array($value, self::validStatuses())) {
-            // Jika status tidak valid, kita set default ke "Menunggu"
-            $this->attributes['status'] = 'Menunggu';
-        } else {
-            $this->attributes['status'] = $value;
-        }
     }
 }

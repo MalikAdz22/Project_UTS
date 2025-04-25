@@ -11,7 +11,7 @@ class Jadwal extends Model
 
     // Tentukan kolom-kolom yang boleh diisi
     protected $fillable = [
-        'nama_seleksi',
+        'tes_seleksi',
         'tanggal_seleksi',
         'waktu_mulai',
         'waktu_selesai',
@@ -20,9 +20,8 @@ class Jadwal extends Model
     // Menentukan tipe data untuk kolom
     protected $casts = [
         'tanggal_seleksi' => 'date', // Tanggal menjadi objek Date
-        'waktu_mulai' => 'time',     // Waktu menjadi objek Time
-        'waktu_selesai' => 'time',   // Waktu menjadi objek Time
+        'waktu_mulai' => 'datetime',     // Waktu menjadi objek Time
+        'waktu_selesai' => 'datetime',   // Waktu menjadi objek Time
     ];
 
-    // Jika diperlukan, Anda bisa menambahkan aksesori (accessors) atau mutator untuk memformat output
 }

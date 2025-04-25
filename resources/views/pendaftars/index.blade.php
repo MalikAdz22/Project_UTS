@@ -15,8 +15,10 @@
         <tr>
             <th>ID</th>
             <th>Nama Lengkap</th>
+            <th>Tanggal Lahir</th>
             <th>Posisi</th>
-            <th>Status</th>
+            <th>Kontak</th>
+            <th>Alamat</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -60,14 +62,6 @@
                         <label for="alamat">Alamat</label>
                         <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status" required>
-                            <option value="Menunggu">Menunggu</option>
-                            <option value="Diterima">Diterima</option>
-                            <option value="Ditolak">Ditolak</option>
-                        </select>
-                    </div>                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -95,8 +89,10 @@ $(document).ready(function() {
         columns: [
             { data: 'id', name: 'id' },
             { data: 'nama_lengkap', name: 'nama_lengkap' },
+            { data: 'tanggal_lahir', name: 'tanggal_lahir' },
             { data: 'posisi', name: 'posisi' },
-            { data: 'status', name: 'status' },
+            { data: 'kontak', name: 'kontak' },
+            { data: 'alamat', name: 'alamat' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ],
         responsive: true,
@@ -115,25 +111,6 @@ $(document).ready(function() {
         // Lakukan sesuatu dengan ID, seperti membuka modal dan mengisi form edit
         window.location.href = "/pendaftars/" + id + "/edit";
     });
-
-    // Event listener untuk tombol Hapus
-    $(document).on('click', '.delete-btn', function() {
-        var id = $(this).data('id');
-        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-            $.ajax({
-                url: "/pendaftars/" + id,
-                method: 'DELETE',
-                success: function(response) {
-                    table.ajax.reload();
-                    alert(response.message);
-                },
-                error: function(response) {
-                    alert('Terjadi kesalahan saat menghapus.');
-                }
-            });
-        }
-    });
-
     // Submit form tambah pendaftar
     $('#addPendaftarForm').submit(function(e) {
         e.preventDefault();
@@ -153,6 +130,44 @@ $(document).ready(function() {
             }
         });
     });
+    // Event listener untuk tombol Hapus dengan SweetAlert2
+$(document).on('click', '.delete-btn', function() {
+    var id = $(this).data('id');
+
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data yang dihapus tidak bisa dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/pendaftars/" + id,
+                method: 'DELETE',
+                success: function(response) {
+                    $('#pendaftarsTable').DataTable().ajax.reload();
+                    Swal.fire(
+                        'Dihapus!',
+                        response.message,
+                        'success'
+                    );
+                },
+                error: function(response) {
+                    Swal.fire(
+                        'Gagal!',
+                        'Terjadi kesalahan saat menghapus.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
+
 });
 </script>
 @endpush
